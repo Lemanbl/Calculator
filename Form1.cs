@@ -11,10 +11,62 @@ namespace Calculator
         }
 
         private Operation currentOperation = Operation.None;
+        private double firstOperand;
+        private double secondOperand;
+        private bool isNewNumber=false;
+        private bool IsOperator(char character) {
+            switch (character)
+            {
+                case '+': 
+                case '-': 
+                case 'x': 
+                case '/':
+                    return true;
+                default:
+                    return false;
+            }
+        }
+        private Operation GetOperation(string str)
+        {
+            switch (str)
+            {
+                case "+":
+                    return Operation.Add;
+                case "-":
+                    return Operation.Subtract;
+                case "x":
+                    return Operation.Multiply;
+                case "/":
+                    return Operation.Divide;
+                default:
+                    return Operation.None;
+            }
+        }
+        private double Calculate(double firstOperand, double secondOperand, Operation operation)
+        {
+            switch (operation) { 
+                case Operation.Add:
+                    return firstOperand + secondOperand;
+                case Operation.Subtract:
+                    return firstOperand - secondOperand;
+                case Operation.Divide:
+                    return firstOperand / secondOperand;
+                case Operation.Multiply:
+                    return firstOperand * secondOperand;
+                default:
+                    return 0;
+            }
+        }
         private void NumberButton_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            textBox.Text = (textBox.Text == "0") ? button.Text : textBox.Text+button.Text;
+            textBox.Text = (textBox.Text == "0") ? button.Text : textBox.Text + button.Text;
+            if (isNewNumber)
+            {
+                textBox.Clear();
+                isNewNumber = false;
+                textBox.Text=button.Text;   
+            }
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -23,36 +75,33 @@ namespace Calculator
         }
 
         private void OperatorButton_Click(object sender, EventArgs e)
-        {
-            Button button = (Button)sender;
-            switch (button.Text)
-            {
-                case "+":
-                    currentOperation = Operation.Add;
-                    break;
-                case "-":
-                    currentOperation = Operation.Subtract;
-                    break;
-                case "x":
-                    currentOperation = Operation.Multiply;
-                    break;
-                case "/":
-                    currentOperation = Operation.Divide;
-                    break;
-            }
+        {   Button button = (Button)sender;
+            currentOperation=GetOperation(button.Text);
             if (currentOperation != Operation.None)
             {
-                if(textBox.Text.EndsWith("+") || textBox.Text.EndsWith("-") || textBox.Text.EndsWith("/")|| textBox.Text.EndsWith("x"))
+                char lastCharacter = textBox.Text[textBox.Text.Length - 1];
+                isNewNumber = true;
+                if (IsOperator(lastCharacter))
                 {
                     textBox.Text = textBox.Text.Remove(textBox.TextLength-1);
                 }
-                textBox.Text += button.Text;
             }
+            else
+            {
+                firstOperand = Convert.ToDouble(textBox.Text);  
+            }
+
+                textBox.Text += button.Text;
+
         }
 
         private void equalButton_Click(object sender, EventArgs e)
         {
-
+            secondOperand = Convert.ToDouble(textBox.Text);
+            var result=Calculate(firstOperand, secondOperand,currentOperation);
+            resultLabel.Text=result.ToString();
         }
+
+       
     }
 }
