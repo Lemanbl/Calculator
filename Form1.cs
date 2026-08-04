@@ -60,13 +60,12 @@ namespace Calculator
         private void NumberButton_Click(object sender, EventArgs e)
         {
             Button button = (Button)sender;
-            textBox.Text = (textBox.Text == "0") ? button.Text : textBox.Text + button.Text;
             if (isNewNumber)
             {
                 textBox.Clear();
                 isNewNumber = false;
-                textBox.Text=button.Text;   
             }
+            textBox.Text = (textBox.Text == "0") ? button.Text : textBox.Text + button.Text;
         }
 
         private void deleteButton_Click(object sender, EventArgs e)
@@ -75,24 +74,19 @@ namespace Calculator
         }
 
         private void OperatorButton_Click(object sender, EventArgs e)
-        {   Button button = (Button)sender;
-            currentOperation=GetOperation(button.Text);
-            if (currentOperation != Operation.None)
+        {
+            Button button = (Button)sender;
+            char lastCharacter = textBox.Text[textBox.Text.Length - 1];
+            if (IsOperator(lastCharacter))
             {
-                char lastCharacter = textBox.Text[textBox.Text.Length - 1];
+                textBox.Text = textBox.Text.Remove(textBox.TextLength - 1);
+            }
+            else {
+                firstOperand = Convert.ToDouble(textBox.Text);
+                currentOperation = GetOperation(button.Text);
                 isNewNumber = true;
-                if (IsOperator(lastCharacter))
-                {
-                    textBox.Text = textBox.Text.Remove(textBox.TextLength-1);
-                }
-            }
-            else
-            {
-                firstOperand = Convert.ToDouble(textBox.Text);  
-            }
-
                 textBox.Text += button.Text;
-
+            }
         }
 
         private void equalButton_Click(object sender, EventArgs e)
@@ -100,6 +94,11 @@ namespace Calculator
             secondOperand = Convert.ToDouble(textBox.Text);
             var result=Calculate(firstOperand, secondOperand,currentOperation);
             resultLabel.Text=result.ToString();
+            textBox.Text =result.ToString();
+            firstOperand = result;
+            currentOperation=Operation.None;
+            isNewNumber = true;
+
         }
 
        
