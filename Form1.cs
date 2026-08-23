@@ -71,6 +71,12 @@ namespace Calculator
         private void deleteButton_Click(object sender, EventArgs e)
         {
             textBox.Text = "0";
+            isNewNumber = false;
+            firstOperand = 0;
+            secondOperand = 0;
+            currentOperation= Operation.None;
+            resultLabel.Text = "0";
+
         }
 
         private void OperatorButton_Click(object sender, EventArgs e)
@@ -85,22 +91,50 @@ namespace Calculator
                 firstOperand = Convert.ToDouble(textBox.Text);
                 currentOperation = GetOperation(button.Text);
                 isNewNumber = true;
-                textBox.Text += button.Text;
+                
             }
+            textBox.Text += button.Text;
         }
 
         private void equalButton_Click(object sender, EventArgs e)
         {
-            secondOperand = Convert.ToDouble(textBox.Text);
-            var result=Calculate(firstOperand, secondOperand,currentOperation);
-            resultLabel.Text=result.ToString();
-            textBox.Text =result.ToString();
-            firstOperand = result;
-            currentOperation=Operation.None;
-            isNewNumber = true;
+            
+            char lastCharacter = textBox.Text[textBox.Text.Length - 1];
+            if (IsOperator(lastCharacter))
+            {
+                return;
+            }
+            else
+            {
+                secondOperand = Convert.ToDouble(textBox.Text);
+                var result = Calculate(firstOperand, secondOperand, currentOperation);
+                resultLabel.Text = result.ToString();
+                textBox.Text = result.ToString();
+                firstOperand = result;
+                currentOperation = Operation.None;
+                isNewNumber = true;
+            }
+        }
+        private void pointButton_Click(object sender, EventArgs e)
+        {
+            Button button = (Button)sender;
+            if (textBox.Text.Contains("."))
+            {
+                return;
 
+            }
+            else
+            {
+                textBox.Text += button.Text;
+            }
         }
 
-       
+        private void backspaceButton_Click(object sender, EventArgs e)
+        {
+            if (textBox.Text != String.Empty)
+            {
+                textBox.Text = textBox.Text.Remove(textBox.Text.Length - 1);
+            }
+        }
     }
 }

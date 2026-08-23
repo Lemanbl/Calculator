@@ -69,14 +69,16 @@
             // parenthesesButton
             // 
             this.parenthesesButton.BackColor = System.Drawing.Color.Lavender;
-            this.parenthesesButton.Font = new System.Drawing.Font("Calibri", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.parenthesesButton.BackgroundImage = global::Calculator.Properties.Resources.backspace;
+            this.parenthesesButton.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.parenthesesButton.Font = new System.Drawing.Font("Calibri", 17F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.parenthesesButton.ForeColor = System.Drawing.Color.DarkGreen;
             this.parenthesesButton.Location = new System.Drawing.Point(121, 229);
             this.parenthesesButton.Name = "parenthesesButton";
             this.parenthesesButton.Size = new System.Drawing.Size(60, 60);
             this.parenthesesButton.TabIndex = 1;
-            this.parenthesesButton.Text = "()";
             this.parenthesesButton.UseVisualStyleBackColor = false;
+            this.parenthesesButton.Click += new System.EventHandler(this.backspaceButton_Click);
             // 
             // percentButton
             // 
@@ -283,6 +285,7 @@
             this.pointButton.TabIndex = 18;
             this.pointButton.Text = ".";
             this.pointButton.UseVisualStyleBackColor = false;
+            this.pointButton.Click += new System.EventHandler(this.pointButton_Click);
             // 
             // button19
             // 
