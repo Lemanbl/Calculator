@@ -50,7 +50,7 @@ namespace Calculator
                 case Operation.Subtract:
                     return firstOperand - secondOperand;
                 case Operation.Divide:
-                    return firstOperand / secondOperand;
+                    return firstOperand/secondOperand;
                 case Operation.Multiply:
                     return firstOperand * secondOperand;
                 default:
@@ -98,27 +98,32 @@ namespace Calculator
 
         private void equalButton_Click(object sender, EventArgs e)
         {
-            
+
             char lastCharacter = textBox.Text[textBox.Text.Length - 1];
             if (IsOperator(lastCharacter))
             {
                 return;
             }
-            else
-            {
-                secondOperand = Convert.ToDouble(textBox.Text);
-                var result = Calculate(firstOperand, secondOperand, currentOperation);
-                resultLabel.Text = result.ToString();
-                textBox.Text = result.ToString();
-                firstOperand = result;
-                currentOperation = Operation.None;
-                isNewNumber = true;
+
+            secondOperand = Convert.ToDouble(textBox.Text);
+            if (currentOperation==Operation.Divide && secondOperand == 0) {
+                MessageBox.Show("Can not divide by zero");
+                return; 
             }
+
+            var result = Calculate(firstOperand, secondOperand, currentOperation);
+            resultLabel.Text = result.ToString();
+            textBox.Text = result.ToString();
+            firstOperand = result;
+            currentOperation = Operation.None;
+            isNewNumber = true;
+            
         }
         private void pointButton_Click(object sender, EventArgs e)
         {
+            char lastCharacter = textBox.Text[textBox.Text.Length - 1];
             Button button = (Button)sender;
-            if (textBox.Text.Contains("."))
+            if (textBox.Text.Contains(".") || IsOperator(lastCharacter))
             {
                 return;
 
@@ -128,13 +133,41 @@ namespace Calculator
                 textBox.Text += button.Text;
             }
         }
-
         private void backspaceButton_Click(object sender, EventArgs e)
         {
-            if (textBox.Text != String.Empty)
+            if (textBox.Text.Length == 1)
             {
-                textBox.Text = textBox.Text.Remove(textBox.Text.Length - 1);
+                textBox.Text = "0";
+                return;
             }
+            char lastCharacter = textBox.Text[textBox.Text.Length - 1];
+            if (IsOperator(lastCharacter))
+            {
+                currentOperation = Operation.None;
+                isNewNumber = false;
+            }
+            textBox.Text = textBox.Text.Remove(textBox.Text.Length - 1);
+        }
+        private void minusButton_Click(object sender, EventArgs e)
+        {
+            if (!textBox.Text.StartsWith("-"))
+            {
+                textBox.Text = "-" + textBox.Text;
+            }
+            else
+            {
+                textBox.Text = textBox.Text.Remove(0, 1);
+            }
+            
+        }
+
+        private void percentButton_Click(object sender, EventArgs e)
+        {
+            char lastCharacter = textBox.Text[textBox.Text.Length - 1];
+            if (IsOperator(lastCharacter)) return;
+
+            var ResultPercent = Convert.ToDouble(textBox.Text)/100;
+            textBox.Text=ResultPercent.ToString();
         }
     }
 }

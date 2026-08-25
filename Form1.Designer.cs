@@ -91,6 +91,7 @@
             this.percentButton.TabIndex = 2;
             this.percentButton.Text = "%";
             this.percentButton.UseVisualStyleBackColor = false;
+            this.percentButton.Click += new System.EventHandler(this.percentButton_Click);
             // 
             // divisionButton
             // 
@@ -311,6 +312,7 @@
             this.minusButton.TabIndex = 16;
             this.minusButton.Text = "+/-";
             this.minusButton.UseVisualStyleBackColor = false;
+            this.minusButton.Click += new System.EventHandler(this.minusButton_Click);
             // 
             // textBox
             // 
@@ -319,6 +321,7 @@
             this.textBox.Location = new System.Drawing.Point(24, 34);
             this.textBox.Multiline = true;
             this.textBox.Name = "textBox";
+            this.textBox.ReadOnly = true;
             this.textBox.Size = new System.Drawing.Size(332, 116);
             this.textBox.TabIndex = 20;
             this.textBox.Text = "0";
